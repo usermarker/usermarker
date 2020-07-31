@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshu.dao.ContentMapper">
+	<select id="findContentVoPage" parameterType="contentvo" resultType="contentvo">
+		SELECT
+			c.* , a.categoryname AS cname
+		FROM
+			content c , contentcategory a
+		WHERE
+			c.contentcategoryid = a.contentcategoryid
+			<if test="contenttitle != null and contenttitle != ''">
+				and c.contenttitle like "%${contenttitle}%"
+			</if>
+			<if test="contentcategoryid != null">
+				and c.contentcategoryid = #{contentcategoryid}
+			</if>
+	</select>
+	<select id="findAllContentByName" parameterType="content" resultType="content">
+		select * from content where contenttitle = #{contenttitle}
+	</select>
+</mapper>
