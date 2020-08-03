@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshu.dao.ContentMapper">
+	<select id="findContentVoPage" parameterType="contentVo" resultType="contentVo">
+		SELECT
+			c.* , s.stylename AS sname
+		FROM
+			content c , style s
+		WHERE
+			c.styleid = s.id
+			<if test="title != null and title != ''">
+				and c.title like "%${title}%"
+			</if>
+			<if test="styleid != null">
+				and c.styleid = #{styleid}
+			</if>
+	</select>
+	<select id="findAllContentByname" parameterType="content" resultType="content">
+		select * from content where title = #{title}
+	</select>
+</mapper>
