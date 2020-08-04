@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xiaoshu.dao.StudentMapper">
+ <resultMap type="student" id="queryall">
+ 	<id column="sid" property="sid"></id>
+ 	<result column="s_Name" property="sName"/>
+ 	<result column="sex" property="sex"/>
+ 	<result column="hobby" property="hobby"/>
+ 	<result column="birthday" property="birthday"/>
+ 	<result column="state" property="state"/>
+ 	<result column="maid" property="maid"/>
+ 	<association property="major" javaType="major">
+	 	<id column="maid" property="maid"></id>
+	 	<result column="sName" property="sName"/>
+ 	</association>
+ </resultMap>
+ 
+ <select id="findAll" parameterType="studentVO" resultMap="queryall">
+ 	select 
+ 	s.*,
+ 	m.maid,
+ 	m.s_Name as sName
+ 	
+ 	from student s left outer join major m on s.maid=m.maid
+ 	<where>
+ 		<if test="sName!=null and sName!=''">
+ 			and s.s_Name like '%${sName}%'
+ 		</if>
+ 		<if test="maid!=null and maid!=0">
+ 			and s.maid=#{maid}
+ 		</if>
+ 		<if test="start!=null">
+ 			and s.birthday &gt;=#{start}
+ 		</if>
+ 		<if test="end!=null">
+ 			and s.birthday &lt;=#{end}
+ 		</if>
+ 	
+ 	</where>
+ 	
+ </select>
+ 
+</mapper>
